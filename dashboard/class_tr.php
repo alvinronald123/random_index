@@ -363,7 +363,7 @@ if (isset($_GET['search'])) {
         }
     }
 } else {
-    $sql = "SELECT * FROM add_class_tr";
+    $sql = "SELECT * FROM add_class_tr LIMIT 5";
     $res = mysqli_query($conn, $sql);
     $sn = 1;
 
@@ -371,6 +371,8 @@ if (isset($_GET['search'])) {
         while ($row = mysqli_fetch_assoc($res)) {
             printTableRow($sn, $row);
             $sn++;
+                        // echo $row['namne'];
+
         }
     }
 }
