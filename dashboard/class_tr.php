@@ -197,11 +197,15 @@ ini_set('display_errors', true);
                         </span>
                     </a>
                     <div id="myDropdown" class="dropdown">
-                        <a href="#" onclick="updateValue(5)">5</a>
-                        <a href="#" onclick="updateValue(10)">10</a>
-                        <a href="#" onclick="updateValue(20)">20</a>
-                        <a href="#" onclick="updateValue(30)">30</a>
-                        <a href="#" onclick="updateValue(50)">50</a>
+                        <?php
+                            if(isset($_POST['num'])) $num = $_POST['num'];
+                        ?>
+                        <form action="<?=$_SERVER['REQUEST_URI']?>" method="post" style="display:flex;flex-direction:column;">
+                           <button value="5" name="num">5</button>
+                           <button value="10" name="num">10</button>
+                           <button value="20" name="num">20</button>
+                           <button value="30" name="num">30</button>
+                        </form>
                     </div>
                     <a href="" style="border:none;">
                         <span>per page</span>
@@ -314,7 +318,6 @@ ini_set('display_errors', true);
                             <hr>
                         </table>
                     </div> -->
-
                     <table class="subject_heads">
                         <thead>
                             <tr>
@@ -363,7 +366,7 @@ if (isset($_GET['search'])) {
         }
     }
 } else {
-    $sql = "SELECT * FROM add_class_tr";
+    $sql = "SELECT * FROM add_class_tr LIMIT $num";
     $res = mysqli_query($conn, $sql);
     $sn = 1;
 
