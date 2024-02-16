@@ -222,9 +222,7 @@ ini_set('display_errors', true);
                     <a href="add_class_tr.php">Add Class Teacher</a>
                 </div>
                 <div class="arrow-down">
-                    <a href="#">
-                        <span id="selectedValue">0</span>
-                    </a>
+
                     <a href="#" onclick="rotateArrow()">
                         <span>
                             <img id="arrowIcon" style="width: 25px; height: 15px; margin: top 10px;"
@@ -245,6 +243,7 @@ ini_set('display_errors', true);
                             <button value="30" name="num">30</button>
                             <button value="50" name="num">50</button>
                         </form>
+
                     </div>
                     <a href="" style="border:none;">
                         <span>per page</span>
@@ -429,7 +428,7 @@ function printTableRow($sn, $row)
                                     <img style="width:30px; height: 17px;  margin: top 10px; "
                                         src="svg/arrow-down-short-wide.svg" alt="">
                                 </td> -->
-
+                                <td> <input type="hidden" value="<?php echo $row['id']; ?>"> </td>
                                 <td><?php echo $sn; ?></td>
                                 <td><?php echo $row['surname'] . " " . $row['other_name']; ?></td>
                                 <td><?php echo $row['email']; ?></td>
@@ -450,9 +449,7 @@ function printTableRow($sn, $row)
                                                 <option style="border: none;" value="edit">Edit</option>
                                                 <option style="border: none;" value="delete">Delete</option>
                                             </select> -->
-                                        <a class="actions"
-                                            style="text-decoration: none; border-radius:10px; border:none;"
-                                            href="">View</a>
+
                                         <a class="actions"
                                             style="text-decoration: none; border-radius:10px; border:none;"
                                             href="<?php echo SITEURL; ?>update_class_tr.php?id=<?php echo $row['id']; ?>">Edit</a>

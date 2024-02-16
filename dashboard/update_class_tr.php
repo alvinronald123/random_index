@@ -235,42 +235,43 @@ ini_set('display_errors', 1);
 </head>
 
 <body>
+
     <?php
-    // we get the id 
-    $id = $_GET['id'];
+    // // we get the id
+    // $id = $_GET['id'];
 
-    // get the data from the database 
-    $sql = "SELECT * FROM add_class_tr WHERE id = $id ";
+    // // get the data from the database
+    // $sql = "SELECT * FROM add_class_tr WHERE id = $id ";
 
-    // connect to the database 
-    $res = mysqli_query($conn, $sql);
+    // // connect to the database
+    // $res = mysqli_query($conn, $sql);
 
-    //check if the query is working well
-    if ($res == True){
-        //check the available data 
-        $count = mysqli_num_rows($res);
+    // //check if the query is working well
+    // if ($res == True){
+    //     //check the available data
+    //     $count = mysqli_num_rows($res);
 
-        if ($count == 1){
+    //     if ($count == 1){
 
-            //get the values in the data 
-            $rows = mysqli_fetch_assoc($res);
+    //         //get the values in the data
+    //         $rows = mysqli_fetch_assoc($res);
 
-            // data values in the system
-            $surname = $rows['surname'];
-            $other_name = $rows['other_name'];
-            $email = $rows['email'];
-            $date_of_birth = $rows['dob'];
-            $tr_number = $rows['tr_number'];
-            $class_tr_code = $rows['class_tr_code'];
-            $age = $rows['age'];
-            $gender = $rows['gender'];
-            $year = $rows['year'];
-        }
-        else {
-            //redirect
-            echo "<script>window.location.href = '" . SITEURL . "class_tr.php';</script>";
-        }
-    }
+    //         // data values in the system
+    //         $surname = $rows['surname'];
+    //         $other_name = $rows['other_name'];
+    //         $email = $rows['email'];
+    //         $date_of_birth = $rows['dob'];
+    //         $tr_number = $rows['tr_number'];
+    //         $class_tr_code = $rows['class_tr_code'];
+    //         $age = $rows['age'];
+    //         $gender = $rows['gender'];
+    //         $year = $rows['year'];
+    //     }
+    //     else {
+    //         //redirect
+    //         echo "<script>window.location.href = '" . SITEURL . "class_tr.php';</script>";
+    //     }
+    // }
 
     ?>
     <div class="main">
@@ -306,10 +307,56 @@ ini_set('display_errors', 1);
                         echo $_SESSION['update'];
                         unset($_SESSION['update']);
                     }
+                    if(isset($_SESSION['ids']))
+                    {
+                        echo $_SESSION['ids'];
+                        unset($_SESSION['ids']);
+                    }
                     ?>
                     <br>
                     <hr>
                     <br>
+                    <?php
+
+
+// Check if id is set or not
+if (isset($_GET['id'])) {
+    // Get id and all other details
+    $id = $_GET['id'];
+    // Query to get other details
+    $sql = "SELECT * FROM add_class_tr WHERE id = '{$id}' ";
+
+    // Run query
+    $res = mysqli_query($conn, $sql);
+    // Count the rows to check id validation
+    $count = mysqli_num_rows($res);
+    if ($count == 1) {
+        // Get all the data
+        $row = mysqli_fetch_assoc($res);
+        $id = $row['id'];
+        $surname = $row['surname'];
+        $other_name = $row['other_name'];
+        $email = $row['email'];
+        $date_of_birth = $row['dob'];
+        $tr_number = $row['tr_number'];
+        $class_tr_code = $row['class_tr_code'];
+        $age = $row['age'];
+        $gender = $row['gender'];
+        $year = $row['year'];
+    } else {
+        // Redirect with an error message
+        $_SESSION['ids'] = " <div class='error'> Something is Wrong With The ID </div> ";
+        echo "<script> window.location.href = '" . SITEURL . "update_class_tr.php'; </script>";
+        exit();
+    }
+} else {
+    // Redirect with an error message
+    $_SESSION['ids'] = " <div class='error'> ID is not set in the URL </div> ";
+    //echo "<script> window.location.href = '" . SITEURL . "update_class_tr.php'; </script>";
+    exit();
+}
+?>
+
                     <form action="" method="POST" class="comment-form">
 
                         <div class="form-column">
@@ -361,7 +408,7 @@ ini_set('display_errors', 1);
                             </div>
                             <div class="form-group">
                                 <input style="margin-left:20px; margin-top:20px;width:300px;" type="submit"
-                                    name="Submit" value="Update" class="btn">
+                                    name="submit" value="Update" class="btn">
 
                                 <!-- <button style="margin-left:20px; margin-top:20px;width:300px; " type="submit"
                                     name="submit" class="btn">
@@ -382,11 +429,11 @@ ini_set('display_errors', 1);
 
 </body>
 <?php
-// now we are working on the updates 
+// now we are working on the updates
 
-if(isset($_POST['Submit']))
+if(isset($_POST['submit']))
 {
-    // now get all the values 
+    // now get all the values
      // data values in the system
      $id = $_POST['id'];
      $surname = $_POST['surname'];
@@ -397,9 +444,9 @@ if(isset($_POST['Submit']))
      $class_tr_code = $_POST['class_tr_code'];
      $age = $_POST['age'];
      $gender = $_POST['gender'];
-     $year = $_POST['year'];   
-     
-     // now make the sql query to update the details 
+     $year = $_POST['year'];
+
+     // now make the sql query to update the details
      $sql = "UPDATE add_class_tr SET
      surname = '$surname',
      other_name = '$other_name',
@@ -413,7 +460,7 @@ if(isset($_POST['Submit']))
      WHERE id = '$id'
       ";
 
-      // run the connection 
+      // run the connection
       $res = mysqli_query($conn, $sql);
 
       // check if $res is true
@@ -424,7 +471,7 @@ if(isset($_POST['Submit']))
         echo "<script>window.location.href = '" . SITEURL . "class_tr.php';</script>";
       }
       else{
-        $_SESSION['update'] = " <div class='success'> The Class Teacher's Details Have Not Been Updated </div> ";
+        $_SESSION['update'] = " <div class='error'> The Class Teacher's Details Have Not Been Updated </div> ";
         // now redirect the user
         //header('Location :' .SITEURL. 'update_class_tr.php');
         echo "<script>window.location.href = '" . SITEURL . "update_class_tr.php';</script>";

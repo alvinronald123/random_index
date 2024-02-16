@@ -1,3 +1,9 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+// Rest of your PHP code...
+?>
+<?php include '../__con/conn.php';?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -126,6 +132,105 @@
         background-color: #333;
         color: #ddd;
     }
+
+    .comment-form {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .form-column {
+        flex: 1;
+        padding: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="email"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+    }
+
+    input[type="submit"] {
+
+        background-color: #337ab7;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    input[type="submit"]:hover {
+
+        background-color: #0c1e2e;
+    }
+
+    .textarea-group {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    textarea {
+        width: 90%;
+        height: 150px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+
+    .details-container h2 {
+        color: #337ab7;
+        text-align: center;
+        align-items: center;
+    }
+
+    .btns {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+    }
+
+    .btns a {
+        text-decoration: none;
+        color: #333;
+        background-color: #337ab7;
+        padding: 10px 20px;
+        border-radius: 15px;
+        color: white;
+    }
+
+    .btns a:hover {
+        background-color: #382f2f;
+    }
+
+    .success {
+        color: green;
+    }
+
+    .error {
+        color: red;
+    }
     </style>
 </head>
 
@@ -150,199 +255,73 @@
             <h1 class="admin-h1">Manage Classes</h1>
             <div class="manage-class">
                 <div class="class-head">
-                    <a href="class.php"> Class List</a>
-                    <a href="">Add Class </a>
+                    <a href="class.php">Class List</a>
+                    <a href="add_class.php">Add Class</a>
                 </div>
-                <div class="arrow-down">
-                    <a href="">
-                        <span>10</span>
-                    </a>
-                    <a href="">
-                        <span>
-                            <img style="width:30px; height: 20px; margin: top 10px;" src="svg/arrow-down-short-wide.svg"
-                                alt="">
-                        </span>
-                    </a>
-                    <a href="" style="border:none;">
-                        <span>per page</span>
-                    </a>
-                    <div class="search">
-                        <a style="border:none;">Search:</a>
-                        <input class="search-input" type="text">
-                    </div>
-                    <div class="clear"></div>
-                    <!-- <div class="table" style="
-                    white-space: nowrap; 
-                    overflow: hidden;
-                  
-                    text-overflow: ellipsis;">
-                        <table>
-                            <div class="table-th" style="padding:5px;">
-                                <a
-                                    style="margin-left:20px; border-left:1px solid black; border:none; margin-top:5px; margin-bottom:5px;">
-                                    <span>#</span>
-                                    <a href="" style=" border:none;">
-                                        <img style="width:30px; height: 20px;  border-right:1px solid black; margin: top 10px; "
-                                            src="svg/arrow-down-short-wide.svg" alt="">
-                                    </a>
-                                </a>
-                                <a style=" border:none;">
-                                    <a class="my-th" style=" border:none; margin-left:40px;"> Class Name</a>
-                                </a>
-                                <a style=" border:none;">
-                                    <a class="my-th" style=" border:none; margin-left:50px;">
-                                        Numeric Number
-                                    </a>
-                                </a>
-                                <a style=" border:none;">
-                                    <a class="my-th" href="" style="border:none; margin-left:50px;">
-                                        Class Teacher
-                                    </a>
-                                </a>
-                                <a style=" border:none;">
-                                    <a class="my-th" style=" border:none; margin-left:50px;">
-                                        Options
-                                    </a>
-                                </a>
 
-                            </div>
-                            <div style="width:800px;overflow-x: scroll; justify-content:space-between;">
-                                <div class="table-th" style="padding:5px;  white-space: nowrap; 
-                             text-overflow: ellipsis; overflow: hidden; max-width:800px;">
-                                    <a style="margin-left:20px;  border:none;">
-                                        <span>1</span>
-                                        <a href="" style=" border:none;">
-                                            <img style="width:30px; height: 20px; border-right:1px solid black; margin: top 10px; "
-                                                src="svg/arrow-down-short-wide.svg" alt="">
-                                        </a>
-                                    </a>
-                                    <a style=" border:none;">
-                                        <a class="my-th" style=" border:none; margin-left:40px;">Form One</a>
-                                    </a>
-                                    <a style=" border:none;">
-                                        <a class="my-th" style=" border:none; margin-left:40px;">
-                                            F:1
-                                        </a>
-                                    </a>
-                                    <a style=" border:none;">
-                                        <a class="my-th" href="" style="border:none;  
-                                         white-space: nowrap;
-                                         white-space: normal;
-                                            overflow: visible;
-                                            overflow-wrap: break-word;margin-left:90px; ">
-                                            alvinronal
-                                        </a>
-                                    </a>
-                                    <a style=" border:none;">
-                                        <a class="my-th" style=" border:none;">
-                                            <button class="btn">
-                                                <select
-                                                    style="border: none; outline: none; width:70px; height:15px;  background-color: #21a9e1;">
-                                                    <option style="border: none;" value="">Action</option>
-                                                    <option style="border: none;" value="">View</option>
-                                                    <option style="border: none;" value="">Edit</option>
-                                                    <option style="border: none;" value="">Delete</option>
-                                                </select>
-                                            </button>
-                                        </a>
-                                    </a>
-
-                                </div>
-                            </div>
-                            <div class="table-th" style="padding:5px; ">
-                                <div class=".detail1" style="width: 200px;  display:flex;">
-                                    <p>Showing 1 to 1 of 1 entries</p>
-                                </div>
-
-                                <div class="detail2" style="margin-right: 20px; display:flex; margin-top:5px;">
-                                    <a> <img style="width:20px; height: 10px; margin: top 10px; "
-                                            src="svg/less-than.svg" alt=""> </a>
-                                    <a>
-                                        <p>1</p>
-                                    </a>
-                                    <a> <img style="width:20px; height: 10px; margin: top 10px; "
-                                            src="svg/greater-than.svg" alt=""> </a>
-                                </div>
-
-                            </div>
-                            <div class="clear"></div>
-                            <hr>
-                        </table>
-                    </div> -->
-
-                    <table class="subject_heads">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <span style="font-weight:bold; font-size:20px;">#</span>
-                                    <img style="width:30px; height: 17px;  margin: top 10px; "
-                                        src="svg/arrow-down-short-wide.svg" alt="">
-
-                                </th>
-                                <th>Class Name</th>
-                                <th>Numeric Number</th>
-                                <th>Class Teacher</th>
-                                <th>Year</th>
-                                <th>Options</th>
-
-
-
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Table rows with data -->
-
-
-                            <tr>
-                                <td>
-
-                                    <img style="width:30px; height: 17px;  margin: top 10px; "
-                                        src="svg/arrow-down-short-wide.svg" alt="">
-                                </td>
-                                <td>Form One</td>
-                                <td> S. 1</td>
-                                <td> Lukwago Alvin Ronald</td>
-                                <td>2024 </td>
-
-                                <td>
-                                    <button class="btn">
-                                        <select
-                                            style="border: none; outline: none; width:70px; height:15px;  background-color: #21a9e1;">
-                                            <option style="border: none;" value="">Action</option>
-                                            <option style="border: none;" value="">View</option>
-                                            <option style="border: none;" value="">Edit</option>
-                                            <option style="border: none;" value="">Delete</option>
-                                        </select>
-                                    </button>
-                                </td>
-
-                            </tr>
-
-                            <!-- Add more rows as needed -->
-                        </tbody>
-
-                    </table>
-                    <div class="table-th" style="padding:5px; ">
-                        <div class=".detail1" style="width: 200px;  display:flex;">
-                            <p>Showing 1 to 1 of 1 entries</p>
-                        </div>
-
-                        <div class="detail2" style="margin-right: 20px; display:flex; margin-top:5px;">
-                            <a> <img style="width:20px; height: 10px; margin: top 10px; " src="svg/less-than.svg"
-                                    alt=""> </a>
-                            <a>
-                                <p>1</p>
-                            </a>
-                            <a> <img style="width:20px; height: 10px; margin: top 10px; " src="svg/greater-than.svg"
-                                    alt=""> </a>
-                        </div>
-
-                    </div>
-                    <div class="clear"></div>
+                <div class="subject_title">
                     <hr>
+                    <br>
+
+                    <?php
+                    if(isset($_SESSION['insert']))
+                    {
+                        echo $_SESSION['insert'];
+                        unset($_SESSION['insert']);
+                    }                
+                    
+                    ?>
+                    <br>
+                    <hr>
+                    <br>
+                    <form action="" method="POST" class="comment-form">
+
+                        <div class="form-column">
+
+                            <div class="form-group">
+
+                                <label>Class Name</label>
+                                <input type="text" name="className" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Numeric Name:</label>
+                                <input type="text" name="numericName" required>
+                            </div>
+
+                        </div>
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label>Class Teacher:</label>
+                                <input type="text" name="class_tr" required>
+                            </div>
 
 
+                            <div class="form-group">
+                                <label>Year:</label>
+                                <input type="text" name="year" required>
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <input type="hidden" name="id" value="<?php echo $id?>">
+                            </div>
+                            <div class="form-group">
+                                <input style="margin-left:20px; margin-top:20px;width:300px;" type="submit"
+                                    name="Submit" value="Submit" class="btn">
+
+                                <!-- <button style="margin-left:20px; margin-top:20px;width:300px; " type="submit"
+                                    name="submit" class="btn">
+                                    <span class="btnText" style="font-size:25px;">
+                                        SUBMIT
+                                    </span>
+
+                                </button> -->
+                            </div>
+                        </div>
+
+
+                    </form>
                 </div>
             </div>
 
@@ -351,5 +330,86 @@
     </div>
 
 </body>
+
+<?php 
+ if(isset($_POST['Submit'])){
+     $id = $_POST['id'];
+     $surname = $_POST['surname'];
+     $other_names = $_POST['other_names'];
+     $email = $_POST['email'];
+     $date_of_birth = $_POST['date_of_birth'];
+     $tr_number = $_POST['tr_number'];
+     $class_tr_code = $_POST['class_tr_code'];
+     $age = $_POST['age'];
+     $gender = $_POST['gender'];
+     $year = $_POST['year'];
+
+    //  $sql = "INSERT INTO add_class_tr SET 
+    //  surname = '$surname',
+    //  other_name = '$other_names',     
+    //  email = '$email',
+    //  dob	= '$date_of_birth',
+    //  tr_number = '$tr_number',
+    //  class_tr_code	= '$class_tr_code',
+    //  age	= '$age',
+    //  gender = '$gender',
+    //  year = '$year',
+    
+    //  ";
+    // var_dump($_POST);
+    
+     $sql = "INSERT INTO add_class_tr (surname, other_name, email, dob, tr_number, class_tr_code, age, gender, year) 
+     VALUES ('$surname', '$other_names', '$email', '$date_of_birth', '$tr_number', '$class_tr_code', '$age', '$gender', '$year')";
+    //  echo "<!-- Debug: $sql -->";
+    //  die();
+     $res = mysqli_query($conn, $sql);
+
+     if ($res === false) {
+        die("Query execution failed: " . mysqli_error($conn));
+    }
+
+      if ($res==TRUE){
+         $_SESSION['insert'] = " <div class='title success'> Class Teacher  is Inserted Into The Database </div> ";
+     // header('location:'.SITEURL.'students.php');
+     echo "<script>window.location.href = '" . SITEURL . "add_class.php';</script>";
+
+     }
+     else{
+         $_SESSION['insert'] = " <div class='title error'> Data Failed To Be inserted </div> ";
+    //   header('location:'.SITEURL.'students.php');
+    echo "<script>window.location.href = '" . SITEURL . "add_class.php';</script>";
+
+     }
+
+}
+
+// if(isset($_POST['submit'])){
+    
+//     $surname = $_POST['surname'];
+//     $other_names = $_POST['other_names'];
+//     $email = $_POST['email'];
+//     $date_of_birth = $_POST['date_of_birth'];
+//     $tr_number = $_POST['tr_number'];
+//     $class_tr_code = $_POST['class_tr_code']; // Fix typo here
+//     $age = $_POST['age'];
+//     $gender = $_POST['gender'];
+//     $year = $_POST['year'];
+
+//     $sql = "INSERT INTO add_class_tr (surname, other_name, email, dob, tr_number, class_tr_code, age, gender, year) 
+//             VALUES ('$surname', '$other_names', '$email', '$date_of_birth', '$tr_number', '$class_tr_code', '$age', '$gender', '$year')";
+            
+//     $res = mysqli_query($conn, $sql);
+
+//     if ($res==TRUE){
+//         $_SESSION['insert'] = " <div class='title success'> Data is Inserted Into The Database </div> ";
+//     // header('location:'.SITEURL.'students.php');
+//     }
+//     else{
+//         $_SESSION['insert'] = " <div class='title error'> Data Failed To Be inserted </div> ";
+//     //   header('location:'.SITEURL.'students.php');
+//     }
+// }
+?>
+
 
 </html>
