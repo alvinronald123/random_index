@@ -235,6 +235,44 @@ ini_set('display_errors', 1);
 </head>
 
 <body>
+    <?php
+    // we get the id 
+    $id = $_GET['id'];
+
+    // get the data from the database 
+    $sql = "SELECT * FROM add_class_tr WHERE id = $id ";
+
+    // connect to the database 
+    $res = mysqli_query($conn, $sql);
+
+    //check if the query is working well
+    if ($res == True){
+        //check the available data 
+        $count = mysqli_num_rows($res);
+
+        if ($count == 1){
+
+            //get the values in the data 
+            $rows = mysqli_fetch_assoc($res);
+
+            // data values in the system
+            $surname = $rows['surname'];
+            $other_name = $rows['other_name'];
+            $email = $rows['email'];
+            $date_of_birth = $rows['dob'];
+            $tr_number = $rows['tr_number'];
+            $class_tr_code = $rows['class_tr_code'];
+            $age = $rows['age'];
+            $gender = $rows['gender'];
+            $year = $rows['year'];
+        }
+        else {
+            //redirect
+            echo "<script>window.location.href = '" . SITEURL . "class_tr.php';</script>";
+        }
+    }
+
+    ?>
     <div class="main">
         <?php include 'sidebar.php';?>
         <div class="main-two">
@@ -252,7 +290,7 @@ ini_set('display_errors', 1);
             <br>
             <hr style="margin-left:15px; align-items:center; justify-content:center;">
             <br>
-            <h1 class="admin-h1">Manage Class Teachers</h1>
+            <h1 class="admin-h1">Update Class Teacher's Details . . </h1>
             <div class="manage-class">
                 <div class="class-head">
                     <a href="class_tr.php">Class Teacher's List</a>
@@ -262,14 +300,12 @@ ini_set('display_errors', 1);
                 <div class="subject_title">
                     <hr>
                     <br>
-
                     <?php
-                    if(isset($_SESSION['insert']))
+                    if(isset($_SESSION['update']))
                     {
-                        echo $_SESSION['insert'];
-                        unset($_SESSION['insert']);
-                    }                
-                    
+                        echo $_SESSION['update'];
+                        unset($_SESSION['update']);
+                    }
                     ?>
                     <br>
                     <hr>
@@ -281,23 +317,23 @@ ini_set('display_errors', 1);
                             <div class="form-group">
 
                                 <label>Surname:</label>
-                                <input type="text" name="surname" required>
+                                <input type="text" value="<?php echo $surname; ?>" name="surname" required>
                             </div>
                             <div class="form-group">
                                 <label>Email:</label>
-                                <input type="email" name="email" required>
+                                <input type="email" value="<?php echo $email; ?>" name="email" required>
                             </div>
                             <div class="form-group">
                                 <label>Teacher's Number:</label>
-                                <input type="text" name="tr_number" required>
+                                <input type="text" value="<?php echo $tr_number; ?>" name="tr_number" required>
                             </div>
                             <div class="form-group">
                                 <label>Class Tr Code:</label>
-                                <input type="text" name="class_tr_code" required>
+                                <input type="text" value="<?php echo $class_tr_code; ?>" name="class_tr_code" required>
                             </div>
                             <div class="form-group">
                                 <label>Age:</label>
-                                <input type="number" name="age" required>
+                                <input type="number" value="<?php echo $age; ?>" name="age" required>
                             </div>
 
 
@@ -305,27 +341,27 @@ ini_set('display_errors', 1);
                         <div class="form-column">
                             <div class="form-group">
                                 <label>Other Names:</label>
-                                <input type="text" name="other_names" required>
+                                <input type="text" value="<?php echo $other_name; ?>" name="other_name" required>
                             </div>
 
 
                             <div class="form-group">
                                 <label>Date of Birth:</label>
-                                <input type="text" name="date_of_birth" required>
+                                <input type="text" value="<?php echo $date_of_birth; ?>" name="date_of_birth" required>
                             </div>
                             <div class="form-group">
                                 <label>Year:</label>
-                                <input type="number" name="year" required>
+                                <input type="number" value="<?php echo $year; ?>" name="year" required>
                             </div>
 
                             <div class="form-group">
                                 <label>Gender:</label>
-                                <input type="text" name="gender" required>
+                                <input type="text" value="<?php echo $gender; ?>" name="gender" required>
                                 <input type="hidden" name="id" value="<?php echo $id?>">
                             </div>
                             <div class="form-group">
                                 <input style="margin-left:20px; margin-top:20px;width:300px;" type="submit"
-                                    name="Submit" value="Submit" class="btn">
+                                    name="Submit" value="Update" class="btn">
 
                                 <!-- <button style="margin-left:20px; margin-top:20px;width:300px; " type="submit"
                                     name="submit" class="btn">
@@ -341,92 +377,60 @@ ini_set('display_errors', 1);
                     </form>
                 </div>
             </div>
-
-
         </div>
     </div>
 
 </body>
+<?php
+// now we are working on the updates 
 
-<?php 
- if(isset($_POST['Submit'])){
+if(isset($_POST['Submit']))
+{
+    // now get all the values 
+     // data values in the system
      $id = $_POST['id'];
      $surname = $_POST['surname'];
-     $other_names = $_POST['other_names'];
+     $other_name = $_POST['other_name'];
      $email = $_POST['email'];
      $date_of_birth = $_POST['date_of_birth'];
      $tr_number = $_POST['tr_number'];
      $class_tr_code = $_POST['class_tr_code'];
      $age = $_POST['age'];
      $gender = $_POST['gender'];
-     $year = $_POST['year'];
+     $year = $_POST['year'];   
+     
+     // now make the sql query to update the details 
+     $sql = "UPDATE add_class_tr SET
+     surname = '$surname',
+     other_name = '$other_name',
+     email = '$email',
+     date_of_birth = '$date_of_birth',
+     tr_number = '$tr_number',
+     class_tr_code = '$class_tr_code',
+     age = '$age',
+     gender = '$gender',
+     year = '$year'
+     WHERE id = '$id'
+      ";
 
-    //  $sql = "INSERT INTO add_class_tr SET 
-    //  surname = '$surname',
-    //  other_name = '$other_names',     
-    //  email = '$email',
-    //  dob	= '$date_of_birth',
-    //  tr_number = '$tr_number',
-    //  class_tr_code	= '$class_tr_code',
-    //  age	= '$age',
-    //  gender = '$gender',
-    //  year = '$year',
-    
-    //  ";
-    // var_dump($_POST);
-    
-     $sql = "INSERT INTO add_class_tr (surname, other_name, email, dob, tr_number, class_tr_code, age, gender, year) 
-     VALUES ('$surname', '$other_names', '$email', '$date_of_birth', '$tr_number', '$class_tr_code', '$age', '$gender', '$year')";
-    //  echo "<!-- Debug: $sql -->";
-    //  die();
-     $res = mysqli_query($conn, $sql);
+      // run the connection 
+      $res = mysqli_query($conn, $sql);
 
-     if ($res === false) {
-        die("Query execution failed: " . mysqli_error($conn));
-    }
-
-      if ($res==TRUE){
-         $_SESSION['insert'] = " <div class='title success'> Class Teacher  is Inserted Into The Database </div> ";
-     // header('location:'.SITEURL.'students.php');
-     echo "<script>window.location.href = '" . SITEURL . "class_tr.php';</script>";
-
-     }
-     else{
-         $_SESSION['insert'] = " <div class='title error'> Data Failed To Be inserted </div> ";
-    //   header('location:'.SITEURL.'students.php');
-    echo "<script>window.location.href = '" . SITEURL . "add_class_tr.php';</script>";
-
-     }
-
+      // check if $res is true
+      if($res == TRUE){
+        $_SESSION['update'] = " <div class='success'> The Class Teacher's Details Have Been Updated </div> ";
+        // now redirect the user
+        //header('Location :' .SITEURL. 'class_tr.php');
+        echo "<script>window.location.href = '" . SITEURL . "class_tr.php';</script>";
+      }
+      else{
+        $_SESSION['update'] = " <div class='success'> The Class Teacher's Details Have Not Been Updated </div> ";
+        // now redirect the user
+        //header('Location :' .SITEURL. 'update_class_tr.php');
+        echo "<script>window.location.href = '" . SITEURL . "update_class_tr.php';</script>";
+      }
 }
 
-// if(isset($_POST['submit'])){
-    
-//     $surname = $_POST['surname'];
-//     $other_names = $_POST['other_names'];
-//     $email = $_POST['email'];
-//     $date_of_birth = $_POST['date_of_birth'];
-//     $tr_number = $_POST['tr_number'];
-//     $class_tr_code = $_POST['class_tr_code']; // Fix typo here
-//     $age = $_POST['age'];
-//     $gender = $_POST['gender'];
-//     $year = $_POST['year'];
-
-//     $sql = "INSERT INTO add_class_tr (surname, other_name, email, dob, tr_number, class_tr_code, age, gender, year) 
-//             VALUES ('$surname', '$other_names', '$email', '$date_of_birth', '$tr_number', '$class_tr_code', '$age', '$gender', '$year')";
-            
-//     $res = mysqli_query($conn, $sql);
-
-//     if ($res==TRUE){
-//         $_SESSION['insert'] = " <div class='title success'> Data is Inserted Into The Database </div> ";
-//     // header('location:'.SITEURL.'students.php');
-//     }
-//     else{
-//         $_SESSION['insert'] = " <div class='title error'> Data Failed To Be inserted </div> ";
-//     //   header('location:'.SITEURL.'students.php');
-//     }
-// }
 ?>
-
 
 </html>

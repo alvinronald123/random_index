@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', true);
 // Rest of your PHP code...
@@ -159,6 +159,19 @@ ini_set('display_errors', true);
         text-decoration: none;
         color: #333;
     }
+
+    .actions:hover {
+        color: #4caf50;
+        background-color: #382f2f;
+    }
+
+    .success {
+        color: green;
+    }
+
+    .error {
+        color: red;
+    }
     </style>
 </head>
 
@@ -179,7 +192,29 @@ ini_set('display_errors', true);
             </div>
             <br>
             <hr style="margin-left:15px; align-items:center; justify-content:center;">
-            <br>
+
+
+            <?php
+                    if(isset($_SESSION['delete']))
+                    {
+                        echo $_SESSION['delete'];
+                        unset($_SESSION['delete']);
+                    }           
+            
+                    if(isset($_SESSION['insert']))
+                    {
+                        echo $_SESSION['insert'];
+                        unset($_SESSION['insert']);
+                    }                
+                    
+                    if (isset($_SESSION['update']))
+                    {
+                        echo $_SESSION['update'];
+                        unset($_SESSION['update']);
+                    }
+                    ?>
+            <hr style="margin-left:15px; align-items:center; justify-content:center;">
+
             <h1 class="admin-h1">Manage Class Teachers</h1>
             <div class="manage-class">
                 <div class="class-head">
@@ -197,11 +232,19 @@ ini_set('display_errors', true);
                         </span>
                     </a>
                     <div id="myDropdown" class="dropdown">
-                        <a href="#" onclick="updateValue(5)">5</a>
-                        <a href="#" onclick="updateValue(10)">10</a>
-                        <a href="#" onclick="updateValue(20)">20</a>
-                        <a href="#" onclick="updateValue(30)">30</a>
-                        <a href="#" onclick="updateValue(50)">50</a>
+                        <?php
+                          $num = 5;
+                            if(isset($_POST['num'])) $num = $_POST['num'];
+                          
+                        ?>
+                        <form action="<?=$_SERVER['REQUEST_URI']?>" method="post"
+                            style="display:flex;flex-direction:column;">
+                            <button value="5" name="num">5</button>
+                            <button value="10" name="num">10</button>
+                            <button value="20" name="num">20</button>
+                            <button value="30" name="num">30</button>
+                            <button value="50" name="num">50</button>
+                        </form>
                     </div>
                     <a href="" style="border:none;">
                         <span>per page</span>
@@ -314,16 +357,15 @@ ini_set('display_errors', true);
                             <hr>
                         </table>
                     </div> -->
-
                     <table class="subject_heads">
                         <thead>
                             <tr>
-                                <th>
+                                <!-- <th>
                                     <span style="font-weight:bold; font-size:20px;">#</span>
                                     <img style="width:30px; height: 17px;  margin: top 10px; "
                                         src="svg/arrow-down-short-wide.svg" alt="">
 
-                                </th>
+                                </th> -->
                                 <th>Id No_</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -363,9 +405,11 @@ if (isset($_GET['search'])) {
         }
     }
 } else {
-    $sql = "SELECT * FROM add_class_tr LIMIT 5";
+  //  $sql = "SELECT * FROM add_class_tr LIMIT 5";
+    $sql = "SELECT * FROM add_class_tr LIMIT $num";
     $res = mysqli_query($conn, $sql);
     $sn = 1;
+    
 
     if ($res && mysqli_num_rows($res) > 0) {
         while ($row = mysqli_fetch_assoc($res)) {
@@ -381,10 +425,11 @@ function printTableRow($sn, $row)
 {
     ?>
                             <tr>
-                                <td>
+                                <!-- <td>
                                     <img style="width:30px; height: 17px;  margin: top 10px; "
                                         src="svg/arrow-down-short-wide.svg" alt="">
-                                </td>
+                                </td> -->
+
                                 <td><?php echo $sn; ?></td>
                                 <td><?php echo $row['surname'] . " " . $row['other_name']; ?></td>
                                 <td><?php echo $row['email']; ?></td>
@@ -394,15 +439,29 @@ function printTableRow($sn, $row)
                                 <td><?php echo $row['class_tr_code']; ?></td>
                                 <td><?php echo $row['year']; ?></td>
                                 <td>
-                                    <button class="btn">
-                                        <select
-                                            style="border: none; outline: none; width:70px; height:15px;  background-color: #21a9e1;">
-                                            <option style="border: none;" value="">Action</option>
-                                            <option style="border: none;" value="">View</option>
-                                            <option style="border: none;" value="">Edit</option>
-                                            <option style="border: none;" value="">Delete</option>
-                                        </select>
-                                    </button>
+                                    <!-- <form action="./delete/action.php" method="POST">
+                                        <input type="hidden" name="id" value=""> -->
+
+                                    <div class="btn">
+                                        <!-- <select name="action"
+                                                style="border: none; outline: none; width:70px; height:15px;  background-color: #21a9e1;">
+                                                <option style="border: none;" value="">Action</option>
+                                                <option style="border: none;" value="view">View</option>
+                                                <option style="border: none;" value="edit">Edit</option>
+                                                <option style="border: none;" value="delete">Delete</option>
+                                            </select> -->
+                                        <a class="actions"
+                                            style="text-decoration: none; border-radius:10px; border:none;"
+                                            href="">View</a>
+                                        <a class="actions"
+                                            style="text-decoration: none; border-radius:10px; border:none;"
+                                            href="<?php echo SITEURL; ?>update_class_tr.php?id=<?php echo $row['id']; ?>">Edit</a>
+                                        <a class="actions"
+                                            style="text-decoration: none; border-radius:10px; border:none;"
+                                            href="<?php echo SITEURL; ?>delete/delete_class_tr.php?id=<?php echo $row['id']; ?>">Delete</a>
+                                    </div>
+                                    <!-- </form> -->
+
                                 </td>
                             </tr>
                             <?php

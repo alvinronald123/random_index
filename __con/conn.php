@@ -1,6 +1,6 @@
 <?php
-// session_start();
-// define('SITEURL', 'http://localhost/QOM/');
+session_start();
+define('SITEURL', 'http://localhost/random_index/dashboard/');
 define('LOCALHOST', 'localhost');
 define('DB_USERNAME', 'root');
 Define('DB_PASSWORD', '');
