@@ -292,18 +292,63 @@ ini_set('display_errors', 1);
                         <div class="form-column">
                             <div class="form-group">
                                 <label>Class Teacher:</label>
-                                <input type="text" name="class_tr" required>
+                                <select class="form-group"
+                                    style="width: 400px; outline:none; height:33px; margin-bottom:0; border-color:#ccc;"
+                                    name="class_tr">
+                                    <!-- Assign a name for the dropdown -->
+                                    <option style="outline: none;" value="" selected disabled>Select a Class Teacher
+                                    </option>
+                                    <?php
+    // Your PHP code for fetching data and generating options goes here
+    $sql = "SELECT * FROM add_class_tr";
+    $res = mysqli_query($conn, $sql);
+
+    // Check if the query was successful
+    if ($res == TRUE) {
+        $count = mysqli_num_rows($res);
+
+        // Check if there are rows in the result set
+        if ($count > 0) {
+            // Loop through the result set to fetch data
+            while ($row = mysqli_fetch_assoc($res)) {
+                $id = $row['id'];
+                $classTr1 = $row['surname'];
+                $classTr2 = $row['other_name'];
+                $class_tr_id = $classTr1 . ' ' . $classTr2;
+                ?>
+                                    <option value="<?php echo $id; ?>">
+                                        <?php echo $classTr1 . ' ' . $classTr2; ?>
+                                    </option>
+                                    <?php
+            }
+        } else {
+            echo "No records found";
+        }
+
+        // Free result set
+        mysqli_free_result($res);
+    } else {
+        echo "Error in the query: " . mysqli_error($conn);
+    }
+
+    // Close the database connection
+    mysqli_close($conn);
+    ?>
+                                </select>
                             </div>
+
 
 
                             <div class="form-group">
                                 <label>Year:</label>
                                 <input type="text" name="year" required>
+
+
                             </div>
 
 
                             <div class="form-group">
-
+                                <input type="hidden" name="class_tr_id" value="<?php echo $class_tr_id; ?>">
                                 <input type="hidden" name="id" value="<?php echo $id?>">
                             </div>
                             <div class="form-group">
@@ -330,86 +375,32 @@ ini_set('display_errors', 1);
     </div>
 
 </body>
-
 <?php 
- if(isset($_POST['Submit'])){
-     $id = $_POST['id'];
-     $surname = $_POST['surname'];
-     $other_names = $_POST['other_names'];
-     $email = $_POST['email'];
-     $date_of_birth = $_POST['date_of_birth'];
-     $tr_number = $_POST['tr_number'];
-     $class_tr_code = $_POST['class_tr_code'];
-     $age = $_POST['age'];
-     $gender = $_POST['gender'];
-     $year = $_POST['year'];
+if (isset($_POST['Submit'])) {
+    $className = $_POST['className'];
+    $numericName = $_POST['numericName'];
+    $class_tr_id = $_POST['class_tr']; // Assuming 'class_tr' is the name attribute of the select element
+    $year = $_POST['year'];
 
-    //  $sql = "INSERT INTO add_class_tr SET 
-    //  surname = '$surname',
-    //  other_name = '$other_names',     
-    //  email = '$email',
-    //  dob	= '$date_of_birth',
-    //  tr_number = '$tr_number',
-    //  class_tr_code	= '$class_tr_code',
-    //  age	= '$age',
-    //  gender = '$gender',
-    //  year = '$year',
-    
-    //  ";
-    // var_dump($_POST);
-    
-     $sql = "INSERT INTO add_class_tr (surname, other_name, email, dob, tr_number, class_tr_code, age, gender, year) 
-     VALUES ('$surname', '$other_names', '$email', '$date_of_birth', '$tr_number', '$class_tr_code', '$age', '$gender', '$year')";
-    //  echo "<!-- Debug: $sql -->";
-    //  die();
-     $res = mysqli_query($conn, $sql);
+    $sql = "INSERT INTO class (className, numericName, class_tr, year) 
+            VALUES ('$className', '$numericName', '$class_tr_id', '$year')";
 
-     if ($res === false) {
+    $res = mysqli_query($conn, $sql);
+
+    if ($res === false) {
         die("Query execution failed: " . mysqli_error($conn));
     }
 
-      if ($res==TRUE){
-         $_SESSION['insert'] = " <div class='title success'> Class Teacher  is Inserted Into The Database </div> ";
-     // header('location:'.SITEURL.'students.php');
-     echo "<script>window.location.href = '" . SITEURL . "add_class.php';</script>";
-
-     }
-     else{
-         $_SESSION['insert'] = " <div class='title error'> Data Failed To Be inserted </div> ";
-    //   header('location:'.SITEURL.'students.php');
-    echo "<script>window.location.href = '" . SITEURL . "add_class.php';</script>";
-
-     }
-
+    if ($res == true) {
+        $_SESSION['insert'] = " <div class='title success'> Class is Inserted Into The Database </div> ";
+        echo "<script>window.location.href = '" . SITEURL . "class.php';</script>";
+    } else {
+        $_SESSION['insert'] = " <div class='title error'> Data Failed To Be inserted </div> ";
+        echo "<script>window.location.href = '" . SITEURL . "add_class.php';</script>";
+    }
 }
-
-// if(isset($_POST['submit'])){
-    
-//     $surname = $_POST['surname'];
-//     $other_names = $_POST['other_names'];
-//     $email = $_POST['email'];
-//     $date_of_birth = $_POST['date_of_birth'];
-//     $tr_number = $_POST['tr_number'];
-//     $class_tr_code = $_POST['class_tr_code']; // Fix typo here
-//     $age = $_POST['age'];
-//     $gender = $_POST['gender'];
-//     $year = $_POST['year'];
-
-//     $sql = "INSERT INTO add_class_tr (surname, other_name, email, dob, tr_number, class_tr_code, age, gender, year) 
-//             VALUES ('$surname', '$other_names', '$email', '$date_of_birth', '$tr_number', '$class_tr_code', '$age', '$gender', '$year')";
-            
-//     $res = mysqli_query($conn, $sql);
-
-//     if ($res==TRUE){
-//         $_SESSION['insert'] = " <div class='title success'> Data is Inserted Into The Database </div> ";
-//     // header('location:'.SITEURL.'students.php');
-//     }
-//     else{
-//         $_SESSION['insert'] = " <div class='title error'> Data Failed To Be inserted </div> ";
-//     //   header('location:'.SITEURL.'students.php');
-//     }
-// }
 ?>
+
 
 
 </html>
